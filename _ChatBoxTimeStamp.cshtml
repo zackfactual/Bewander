@@ -1,0 +1,66 @@
+var timeStamp = "";
+foreach (var message in Model.Messages)
+{
+    TimeSpan timeSincePost = DateTime.Now.Subtract(@message.DateTime);
+    @*Format display of time stamp*@
+    if (timeSincePost.TotalSeconds < 1)
+    {
+        timeStamp = "Just now";
+    }
+    else if (timeSincePost.TotalSeconds >= 1
+        && timeSincePost.TotalSeconds < 2)
+    {
+        timeStamp = "1 second ago";
+    }
+    else if (timeSincePost.TotalSeconds > 1
+        && timeSincePost.TotalSeconds < 60)
+    {
+        timeStamp = String.Format("{0} seconds ago", Math.Floor(timeSincePost.TotalSeconds));
+    }
+    else if (timeSincePost.TotalMinutes >= 1
+        && timeSincePost.TotalMinutes < 2)
+    {
+        timeStamp = "1 minute ago";
+    }
+    else if (timeSincePost.TotalSeconds > 60
+        && timeSincePost.TotalMinutes > 1
+        && timeSincePost.TotalMinutes < 60)
+    {
+        timeStamp = String.Format("{0} minutes ago", Math.Floor(timeSincePost.TotalMinutes));
+    }
+    else if (timeSincePost.TotalHours >= 1
+        && timeSincePost.TotalHours < 2)
+    {
+        timeStamp = "1 hour ago";
+    }
+    else if (timeSincePost.TotalMinutes > 60
+        && timeSincePost.TotalHours > 1
+        && timeSincePost.TotalHours < 24)
+    {
+        timeStamp = String.Format("{0} hours ago", Math.Floor(timeSincePost.TotalHours));
+    }
+    else if (timeSincePost.TotalDays >= 1
+        && timeSincePost.TotalDays < 2)
+    {
+        timeStamp = "1 day ago";
+    }
+    else if (timeSincePost.TotalDays >= 2
+        && timeSincePost.TotalDays < 3)
+    {
+        timeStamp = "2 days ago";
+    }
+    else
+    {
+        timeStamp = @message.DateTime.ToString("MM/dd/yyyy");
+    }
+
+    string result = "";
+    for (int i = 0; i < timeStamp.Length; i++)
+    {
+        char pad = '_';
+        int padleft = (42 - timeStamp.Length) / 2;
+        string temp = timeStamp.PadLeft(timeStamp.Length + padleft, pad);
+        result = temp.PadRight(42, pad);
+    }
+    <li class="date-time">@result</li>   
+}
